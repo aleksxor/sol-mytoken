@@ -8,5 +8,10 @@ module.exports = {
         hardhat: {
             chainId: 1337,
         },
+        fantomtest: {
+            url: 'https://rpc.testnet.fantom.network',
+            accounts: [
+            ]
+        }
     },
 };
