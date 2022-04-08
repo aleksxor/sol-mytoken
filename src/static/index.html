@@ -1,0 +1,71 @@
+<!<!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <title>Web3 App</title>
+    </head>
+
+    <body>
+        <p id="havemeta">Have metamask?</p>
+        <p id="owner">?</p>
+
+        <button onclick="connect()">connect to Metamask</button>
+
+        <button onclick="giveMe()">Give me the Money</button>
+
+        <script type="module">
+            import {default as ehters} from 'https://cdnjs.cloudflare.com/ajax/libs/ethers/5.6.0/ethers.es6.min.js'
+
+            let provider
+            let contract
+
+            if (typeof window.ethereum !== 'undefined') {
+                document.getElementById('havemeta').innerText = 'Have Metamask!'
+
+                provider = new ethers.providers.Web3Provider(window.ethereum)
+
+                // contract 
+                const contractAddress = '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9'
+                const abi = [{
+                    "inputs": [
+                        {
+                            "internalType": "uint256",
+                            "name": "amount",
+                            "type": "uint256"
+                        }
+                    ],
+                    "name": "giveMeTheMoney",
+                    "outputs": [],
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                }, {
+                    "inputs": [],
+                    "name": "owner",
+                    "outputs": [
+                        {
+                            "internalType": "address",
+                            "name": "",
+                            "type": "address"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+
+                ]
+                const signer = provider.getSigner()
+
+                contract = new ethers.Contract(contractAddress, abi, signer)
+            }
+
+            window.connect = function connect() {
+                provider.send("eth_requestAccounts", [])
+            }
+
+            window.giveMe = async function () {
+                await contract.giveMeTheMoney(5000)
+            }
+        </script>
+    </body>
+
+    </html>
